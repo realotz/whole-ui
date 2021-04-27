@@ -6,56 +6,54 @@
 // is compatible with the kratos package it is being compiled against.
 
 declare namespace ApiCmsV1 {
-	/** UpdateCategoryReply */
-	type UpdateCategoryReply = {
-		data?:ApiCmsV1.Category
-	}
-	/** DeleteCategoryRequest */
-	type DeleteCategoryRequest = {
-		ids?:Array<number>
-	}
-	/** DeleteCategoryReply */
-	type DeleteCategoryReply = {
-	}
-	/** GetCategoryRequest */
-	type GetCategoryRequest = {
-		id?:number
-	}
-	/** ListCategoryRequest */
-	type ListCategoryRequest = {
-		pid?:number
-		name?:string
-		page?:number
-		page_size?:number
-	}
-	/** ListCategoryReply */
-	type ListCategoryReply = {
-		list?:Array<ApiCmsV1.Category>
-		total?:number
-		page?:number
-		page_size?:number
-	}
-	/** Category */
-	type Category = {
-		id?:number
-		name?:string
-		pid?:number
-		icon?:string
-		desc?:string
-		update_time?:GoogleProtobuf.Timestamp
-		create_time?:GoogleProtobuf.Timestamp
-	}
-	/** CreateCategoryReply */
-	type CreateCategoryReply = {
-		data?:ApiCmsV1.Category
-	}
+  /** ListCategoryRequest */
+  type ListCategoryRequest = {
+    pid?: number;
+    name?: string;
+    page?: number;
+    page_size?: number;
+  };
+  /** ListCategoryReply */
+  type ListCategoryReply = {
+    list?: Array<ApiCmsV1.Category>;
+    total?: number;
+    page?: number;
+    page_size?: number;
+  };
+  /** Category */
+  type Category = {
+    id?: number;
+    name?: string;
+    pid?: number;
+    icon?: string;
+    desc?: string;
+    update_time?: GoogleProtobuf.Timestamp;
+    create_time?: GoogleProtobuf.Timestamp;
+  };
+  /** CreateCategoryReply */
+  type CreateCategoryReply = {
+    data?: ApiCmsV1.Category;
+  };
+  /** UpdateCategoryReply */
+  type UpdateCategoryReply = {
+    data?: ApiCmsV1.Category;
+  };
+  /** DeleteCategoryRequest */
+  type DeleteCategoryRequest = {
+    ids?: Array<number>;
+  };
+  /** DeleteCategoryReply */
+  type DeleteCategoryReply = {};
+  /** GetCategoryRequest */
+  type GetCategoryRequest = {
+    id?: number;
+  };
 }
 
 declare namespace GoogleProtobuf {
-	/** Timestamp */
-	type Timestamp = {
-		seconds?:number
-		nanos?:number
-	}
+  /** Timestamp */
+  type Timestamp = {
+    seconds?: number;
+    nanos?: number;
+  };
 }
-

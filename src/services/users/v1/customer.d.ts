@@ -6,84 +6,92 @@
 // is compatible with the kratos package it is being compiled against.
 
 declare namespace UsersV1 {
-	/** CustomerLoginRes */
-	type CustomerLoginRes = {
-		token?:string
-		role?:string
-		expiration_time?:number
-		customer?:UsersV1.Customer
-	}
-	/** CustomerListOption */
-	type CustomerListOption = {
-		name?:string
-		tag?:string
-		email?:string
-		mobile?:string
-		sex?:string
-		id_card?:string
-		keyword?:string
-		create_time?:string
-	}
-	/** CustomerGetOption */
-	type CustomerGetOption = {
-		id?:number
-	}
-	/** CustomerOption */
-	type CustomerOption = {
-		name?:string
-		account?:string
-		nick_name?:string
-		role?:string
-		email?:string
-		mobile?:string
-		id_card?:string
-		password?:string
-		sex?:string
-		birthday?:GoogleProtobuf.Timestamp
-		id?:number
-		avatar?:string
-	}
-	/** CustomerDeleteOption */
-	type CustomerDeleteOption = {
-		ids?:Array<number>
-	}
-	/** CustomerList */
-	type CustomerList = {
-		list?:Array<UsersV1.Customer>
-	}
-	/** Customer */
-	type Customer = {
-		id?:number
-		uuid?:string
-		name?:string
-		account?:string
-		nick_name?:string
-		role?:string
-		email?:string
-		mobile?:string
-		id_card?:string
-		sex?:string
-		birthday?:GoogleProtobuf.Timestamp
-		last_ip?:string
-		last_time?:GoogleProtobuf.Timestamp
-		create_time?:GoogleProtobuf.Timestamp
-		update_time?:GoogleProtobuf.Timestamp
-		avatar?:string
-	}
-	/** CustomerLogin */
-	type CustomerLogin = {
-		account?:string
-		password?:string
-		captcha?:string
-		code?:string
-	}
+  /** CustomerDeleteOption */
+  type CustomerDeleteOption = {
+    ids?: Array<number>;
+  };
+  /** Customer */
+  type Customer = {
+    id?: number;
+    uuid?: string;
+    name?: string;
+    account?: string;
+    nick_name?: string;
+    role?: string;
+    email?: string;
+    mobile?: string;
+    id_card?: string;
+    sex?: string;
+    birthday?: GoogleProtobuf.Timestamp;
+    last_ip?: string;
+    last_time?: GoogleProtobuf.Timestamp;
+    create_time?: GoogleProtobuf.Timestamp;
+    update_time?: GoogleProtobuf.Timestamp;
+    avatar?: string;
+  };
+  /** CaptchaReq */
+  type CaptchaReq = {
+    to?: string;
+    captcha?: string;
+    challenge?: string;
+    tk?: string;
+  };
+  /** CustomerGetOption */
+  type CustomerGetOption = {
+    id?: number;
+  };
+  /** CustomerLoginRes */
+  type CustomerLoginRes = {
+    token?: string;
+    role?: string;
+    expiration_time?: number;
+    customer?: UsersV1.Customer;
+  };
+  /** CustomerListOption */
+  type CustomerListOption = {
+    name?: string;
+    tag?: string;
+    email?: string;
+    mobile?: string;
+    sex?: string;
+    id_card?: string;
+    keyword?: string;
+    create_time?: string;
+    page?: number;
+    page_size?: number;
+  };
+  /** CustomerOption */
+  type CustomerOption = {
+    name?: string;
+    account?: string;
+    nick_name?: string;
+    role?: string;
+    email?: string;
+    mobile?: string;
+    id_card?: string;
+    password?: string;
+    sex?: string;
+    birthday?: GoogleProtobuf.Timestamp;
+    id?: number;
+    avatar?: string;
+  };
+  /** CustomerList */
+  type CustomerList = {
+    list?: Array<UsersV1.Customer>;
+  };
+  /** CustomerLogin */
+  type CustomerLogin = {
+    account?: string;
+    password?: string;
+    captcha?: string;
+    code?: string;
+  };
 }
 
 declare namespace GoogleProtobuf {
-	/** Timestamp */
-	type Timestamp = {
-		seconds?:number
-		nanos?:number
-	}
+  /** Timestamp */
+  type Timestamp = {
+    seconds?: number;
+    nanos?: number;
+  };
 }
-

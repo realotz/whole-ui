@@ -6,7 +6,7 @@ import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import type { RequestOptionsInit, ResponseError } from 'umi-request';
-import { UserInfo as queryCurrentUser } from './services/users/v1/employee_service.pb';
+import { UserInfo as queryCurrentUser } from './services/admin/v1/employee_service.pb';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 
@@ -23,8 +23,8 @@ export const initialStateConfig = {
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: UsersV1.Member;
-  fetchUserInfo?: () => Promise<UsersV1.Member | undefined>;
+  currentUser?: AdminV1.Employee;
+  fetchUserInfo?: () => Promise<AdminV1.Employee | undefined>;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -68,15 +68,15 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     },
     links: isDev
       ? [
-        <Link to="/umi/plugin/openapi" target="_blank">
-          <LinkOutlined />
-          <span>openAPI 文档</span>
-        </Link>,
-        <Link to="/~docs">
-          <BookOutlined />
-          <span>业务组件文档</span>
-        </Link>,
-      ]
+          <Link to="/umi/plugin/openapi" target="_blank">
+            <LinkOutlined />
+            <span>openAPI 文档</span>
+          </Link>,
+          <Link to="/~docs">
+            <BookOutlined />
+            <span>业务组件文档</span>
+          </Link>,
+        ]
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
@@ -112,10 +112,10 @@ const errorHandler = (error: ResponseError) => {
   if (response && response.status) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
-    if (status == 400) {
+    if (status === 400) {
       response.json().then((data: any) => {
-        message.error(data.message)
-      })
+        message.error(data.message);
+      });
     } else {
       notification.error({
         message: `请求错误 ${status}: ${url}`,
@@ -135,9 +135,8 @@ const errorHandler = (error: ResponseError) => {
 
 // 登录header设置Authorization
 const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
-  const token = Cookies.get("bearer")
-  console.log(token)
-  if (token != undefined) {
+  const token = Cookies.get('bearer');
+  if (token !== undefined) {
     const authHeader = { Authorization: `Bearer ${token}` };
     return {
       url: `${url}`,
@@ -146,8 +145,8 @@ const authHeaderInterceptor = (url: string, options: RequestOptionsInit) => {
   }
   return {
     url: `${url}`,
-    options: { ...options, interceptors: true }
-  }
+    options: { ...options, interceptors: true },
+  };
 };
 
 // https://umijs.org/zh-CN/plugins/plugin-request

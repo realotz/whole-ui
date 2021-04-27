@@ -6,12 +6,12 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import { Alert, Space, message, Tabs } from 'antd';
+import { Space, message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import ProForm, { ProFormCaptcha, ProFormCheckbox, ProFormText } from '@ant-design/pro-form';
 import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { Login as login } from '@/services/users/v1/employee_service.pb';
+import { Login as login } from '@/services/admin/v1/employee_service.pb';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 
 import styles from './index.less';
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (values: UsersV1.EmployeeLogin) => {
+  const handleSubmit = async (values: AdminV1.EmployeeLogin) => {
     setSubmitting(true);
     try {
       // 登录
@@ -52,7 +52,7 @@ const Login: React.FC = () => {
       message.success('登录成功！');
       await fetchUserInfo();
       if (msg.token) {
-        Cookies.set("bearer", msg.token)
+        Cookies.set('bearer', msg.token);
       }
       goto();
     } catch (error) {

@@ -1,16 +1,16 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Input, Drawer } from 'antd';
+import { Button, message, Drawer } from 'antd';
 import React, { useState, useRef } from 'react';
-import { useIntl, FormattedMessage } from 'umi';
+import { FormattedMessage } from 'umi';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import ProForm, { ModalForm, ProFormDatePicker, ProFormDateRangePicker, ProFormDigit, ProFormFieldSet, ProFormGroup, ProFormList, ProFormSelect, ProFormText, ProFormTextArea, ProFormUploadButton, ProFormUploadDragger } from '@ant-design/pro-form';
+import ProForm, { ModalForm, ProFormDatePicker, ProFormText } from '@ant-design/pro-form';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
-import { List, Create, Update, Delete } from '@/services/users/v1/employee_service.pb';
+import { List, Create, Update, Delete } from '@/services/admin/v1/employee_service.pb';
 import { listHelper } from '@/utils/service_helper';
 
 /**
@@ -18,7 +18,7 @@ import { listHelper } from '@/utils/service_helper';
  *
  * @param fields
  */
-const handleAdd = async (fields: UsersV1.Employee) => {
+const handleAdd = async (fields: AdminV1.Employee) => {
   const hide = message.loading('正在添加');
   try {
     await Create({ ...fields });
@@ -57,7 +57,7 @@ const handleUpdate = async (fields: FormValueType) => {
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: UsersV1.Employee[]) => {
+const handleRemove = async (selectedRows: AdminV1.Employee[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -83,69 +83,68 @@ const MemberList: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<UsersV1.Employee>();
-  const [selectedRowsState, setSelectedRows] = useState<UsersV1.Employee[]>([]);
+  const [currentRow, setCurrentRow] = useState<AdminV1.Employee>();
+  const [selectedRowsState, setSelectedRows] = useState<AdminV1.Employee[]>([]);
 
   /** 国际化配置 */
-  const intl = useIntl();
 
-  const columns: ProColumns<UsersV1.Employee>[] = [
+  const columns: ProColumns<AdminV1.Employee>[] = [
     {
-      title: "用户ID",
+      title: '用户ID',
       dataIndex: 'id',
     },
     {
-      title: "头像",
+      title: '头像',
       dataIndex: 'avatar',
-      valueType: "avatar",
-      hideInSearch: true
+      valueType: 'avatar',
+      hideInSearch: true,
     },
     {
-      title: "账号",
+      title: '账号',
       dataIndex: 'account',
     },
     {
-      title: "手机",
+      title: '手机',
       dataIndex: 'mobile',
     },
     {
-      title: "邮箱",
+      title: '邮箱',
       dataIndex: 'email',
     },
     {
-      title: "性别",
+      title: '性别',
       dataIndex: 'sex',
       valueEnum: {
-        "unknown": "未知",
-        "man": "男",
-        "woman": "女",
+        unknown: '未知',
+        man: '男',
+        woman: '女',
       },
       filters: true,
     },
     {
-      title: "生日",
+      title: '生日',
       dataIndex: 'birthday',
       valueType: 'date',
       renderText: (_, item) => {
-        if (item.create_time?.seconds != undefined) {
-          return item.create_time.seconds * 1000
+        if (item.create_time?.seconds !== undefined) {
+          return item.create_time.seconds * 1000;
         }
-        return
-      }
+        return '-/-';
+      },
     },
     {
-      title: "创建时间",
+      title: '创建时间',
       dataIndex: 'create_time.seconds',
       valueType: 'dateTime',
       renderText: (_, item) => {
-        if (item.create_time?.seconds != undefined) {
-          return item.create_time.seconds * 1000
+        if (item.create_time?.seconds !== undefined) {
+          return item.create_time.seconds * 1000;
         }
-        return
-      }
+        return '-/-';
+      },
     },
     {
-      title: "操作",
+      title: '操作',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -155,15 +154,19 @@ const MemberList: React.FC = () => {
             handleUpdateModalVisible(true);
             setCurrentRow(record);
           }}
-        >修改</a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">删除</a>,
+        >
+          修改
+        </a>,
+        <a key="subscribeAlert" href="https://procomponents.ant.design/">
+          删除
+        </a>,
       ],
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<UsersV1.Employee, UsersV1.EmployeeListOption>
+      <ProTable<AdminV1.Employee, AdminV1.EmployeeListOption>
         actionRef={actionRef}
         rowKey="id"
         search={{
@@ -214,7 +217,7 @@ const MemberList: React.FC = () => {
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
-          const success = await handleAdd(value as UsersV1.Employee);
+          const success = await handleAdd(value as AdminV1.Employee);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -224,18 +227,57 @@ const MemberList: React.FC = () => {
         }}
       >
         <ProForm.Group>
-          <ProFormText width="md" name="account" label="账号" tooltip="最长为 24 位" placeholder="请输入账号" />
-          <ProFormText width="md" name="email" label="邮箱" placeholder="请输入邮箱" />
+          <ProFormText
+            width="md"
+            rules={[{ required: true, message: '请输入账号!' }]}
+            name="account"
+            label="账号"
+            tooltip="最长为24 位"
+            placeholder="请输入账号"
+          />
+          <ProFormText
+            width="md"
+            rules={[{ required: true, message: '请输入邮箱!' }]}
+            name="email"
+            label="邮箱"
+            placeholder="请输入邮箱"
+          />
+        </ProForm.Group>
+        <ProForm.Group>
+          <ProFormText
+            width="md"
+            rules={[{ required: true, message: '请输入员工邮箱!' }]}
+            name="name"
+            label="姓名"
+            placeholder="请输入姓名"
+          />
+          <ProFormText
+            width="md"
+            rules={[{ required: true, message: '请输入花名!' }]}
+            name="nick_name"
+            label="花名/昵称"
+            placeholder="请输入昵称"
+          />
         </ProForm.Group>
         <ProForm.Group>
           <ProFormText.Password width="md" name="password" label="密码" placeholder="请输入密码" />
-          <ProFormText.Password width="md" name="c-password" label="确认密码" placeholder="请重新输入密码" />
+          <ProFormText.Password
+            width="md"
+            name="c-password"
+            label="确认密码"
+            placeholder="请重新输入密码"
+          />
         </ProForm.Group>
         <ProForm.Group>
-          <ProFormText width="md" name="moblie" label="手机号" placeholder="请输入手机号" />
+          <ProFormText
+            width="md"
+            rules={[{ required: true, message: '请输入手机号!' }]}
+            name="moblie"
+            label="手机号"
+            placeholder="请输入手机号"
+          />
           <ProFormDatePicker width="md" name="birthday" label="生日" />
         </ProForm.Group>
-
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {
@@ -265,7 +307,7 @@ const MemberList: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<UsersV1.Employee>
+          <ProDescriptions<AdminV1.Employee>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -274,7 +316,7 @@ const MemberList: React.FC = () => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<UsersV1.Employee>[]}
+            columns={columns as ProDescriptionsItemProps<AdminV1.Employee>[]}
           />
         )}
       </Drawer>
